@@ -79,3 +79,12 @@ export const getCurrentUser = async (token: string) => {
 
   return result;
 };
+
+export const logoutUser = async (token: string) => {
+  // 1. Delete the session directly and check affectedRows
+  const [result] = await db.delete(sessions).where(eq(sessions.token, token));
+
+  if (result.affectedRows === 0) {
+    throw new Error('Unauthorized');
+  }
+};
